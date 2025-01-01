@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <div>
+      <textarea id="awsAccessKeyId" placeholder="AWS Access Key ID"></textarea>
+      <textarea id="awsSecretAccessKey" placeholder="AWS Secret Access Key"></textarea>
+      <button onclick="filterAndGenerateSpeech()">Generate Speech</button>
+      <button onclick="displaySpeech()">Display Speech</button>
+    </div>
+    <div id="output"></div>
+    <script>
+      function filterAndGenerateSpeech() {
+        const accessKeyId = document.getElementById('awsAccessKeyId').value;
+        const secretAccessKey = document.getElementById('awsSecretAccessKey').value;
+        google.script.run
+          .withSuccessHandler(displaySpeech)
+          .getTextAndGenerateSpeech(accessKeyId, secretAccessKey);
+      }
+
+      function displaySpeech(audioBlob) {
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = document.createElement('audio');
+        audio.src = audioUrl;
+        audio.controls = true;
+        document.getElementById('output').appendChild(audio);
+      }
+    </script>
+  </body>
+</html>
